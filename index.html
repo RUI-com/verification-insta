@@ -85,7 +85,7 @@
         // Initialize Supabase
         const supabaseUrl = 'https://gqkxntfezmzdtwfbynmz.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdxa3hudGZlem16ZHR3ZmJ5bm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjI0ODUsImV4cCI6MjA1MDA5ODQ4NX0.5O899MSH7B_UVoAlvOd9tjYqeoTPO4TVXgr7XZab3mw'; // Don't expose your key in the frontend
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         // Get the token from the URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
