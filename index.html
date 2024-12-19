@@ -78,13 +78,13 @@
         <h1>Verify Your Email</h1>
         <p>Verifying your email address...</p>
         <div class="message" id="statusMessage"></div>
-        <a href="/" class="button">Go to Home</a>
+        
     </div>
 
     <script>
         // Initialize Supabase
         const supabaseUrl = 'https://gqkxntfezmzdtwfbynmz.supabase.co';
-        const supabaseKey = 'your_supabase_key_here'; // Don't expose your key in the frontend
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdxa3hudGZlem16ZHR3ZmJ5bm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjI0ODUsImV4cCI6MjA1MDA5ODQ4NX0.5O899MSH7B_UVoAlvOd9tjYqeoTPO4TVXgr7XZab3mw'; // Don't expose your key in the frontend
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         // Get the token from the URL query parameters
