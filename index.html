@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .container img {
+            width: 50%;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-weight: bold;
+            color: #28a745;
+            margin-top: 15px;
+        }
+
+        .error-message {
+            font-weight: bold;
+            color: #dc3545;
+            margin-top: 15px;
+        }
+
+        /* Styling for the button (optional) */
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="instagram-world.svg" alt="Logo"/>
+        <h1>Verify Your Email</h1>
+        <p>Verifying your email address...</p>
+        <div class="message" id="statusMessage"></div>
+        <a href="/" class="button">Go to Home</a>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = 'https://gqkxntfezmzdtwfbynmz.supabase.co';
+        const supabaseKey = 'your_supabase_key_here'; // Don't expose your key in the frontend
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Get the token from the URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        const statusMessageElement = document.getElementById('statusMessage');
+
+        if (token) {
+            // Verify the token with Supabase
+            supabase.auth.api.verifyEmail(token)
+                .then(response => {
+                    if (response.error) {
+                        statusMessageElement.classList.add('error-message');
+                        statusMessageElement.textContent = 'Error verifying your email.';
+                    } else {
+                        statusMessageElement.classList.add('message');
+                        statusMessageElement.textContent = 'Email verified successfully!';
+                    }
+                })
+                .catch(error => {
+                    statusMessageElement.classList.add('error-message');
+                    statusMessageElement.textContent = 'Error verifying your email.';
+                });
+        } else {
+            statusMessageElement.classList.add('error-message');
+            statusMessageElement.textContent = 'No token found in the URL.';
+        }
+    </script>
+</body>
+</html>
