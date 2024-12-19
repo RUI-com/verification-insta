@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Email</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.js"></script> <!-- تأكد من استيراد النسخة الصحيحة -->
 
     <style>
         body {
@@ -55,21 +55,6 @@
             color: #dc3545;
             margin-top: 15px;
         }
-
-        .button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-            margin-top: 20px;
-            display: inline-block;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
@@ -81,45 +66,42 @@
     </div>
 
     <script>
-        // Initialize Supabase client
+        // التأكد من استيراد supabase بشكل صحيح
+        const { createClient } = supabase;
+        
         const supabaseUrl = 'https://gqkxntfezmzdtwfbynmz.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdxa3hudGZlem16ZHR3ZmJ5bm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjI0ODUsImV4cCI6MjA1MDA5ODQ4NX0.5O899MSH7B_UVoAlvOd9tjYqeoTPO4TVXgr7XZab3mw';
-        
-        // Create the Supabase client
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-      // Get the 'code' from the URL query parameters
-const urlParams = new URLSearchParams(window.location.search);
-const code = urlParams.get('code');
-const redirectTo = urlParams.get('redirect_to');
+        // استخراج الرمز من الـ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const statusMessageElement = document.getElementById('statusMessage');
 
-const statusMessageElement = document.getElementById('statusMessage');
-
-if (code) {
-    // Verify the code with Supabase (or any other appropriate verification method)
-    supabase.auth.api
-        .verifyEmail(code)  // قد تحتاج إلى تعديل هذه الطريقة حسب كيفية التعامل مع الـ 'code' في Supabase
-        .then(response => {
-            if (response.error) {
-                console.log('Error verifying your email:', response.error);
-                statusMessageElement.classList.add('error-message');
-                statusMessageElement.textContent = 'Error verifying your email.';
-            } else {
-                console.log('Email verified successfully');
-                statusMessageElement.classList.add('message');
-                statusMessageElement.textContent = 'Email verified successfully!';
-            }
-        })
-        .catch(error => {
-            console.log('Error verifying email:', error);
+        if (code) {
+            // التحقق من الرمز مع Supabase
+            supabase.auth.api
+                .verifyEmail(code)  // قم بتعديل هذه الطريقة إذا كانت Supabase تتطلب طريقة أخرى للتحقق
+                .then(response => {
+                    if (response.error) {
+                        console.log('Error verifying your email:', response.error);
+                        statusMessageElement.classList.add('error-message');
+                        statusMessageElement.textContent = 'Error verifying your email.';
+                    } else {
+                        console.log('Email verified successfully');
+                        statusMessageElement.classList.add('message');
+                        statusMessageElement.textContent = 'Email verified successfully!';
+                    }
+                })
+                .catch(error => {
+                    console.log('Error verifying email:', error);
+                    statusMessageElement.classList.add('error-message');
+                    statusMessageElement.textContent = 'Error verifying your email.';
+                });
+        } else {
             statusMessageElement.classList.add('error-message');
-            statusMessageElement.textContent = 'Error verifying your email.';
-        });
-} else {
-    statusMessageElement.classList.add('error-message');
-    statusMessageElement.textContent = 'No code found in the URL.';
-}
-
+            statusMessageElement.textContent = 'No code found in the URL.';
+        }
     </script>
 </body>
 </html>
