@@ -66,22 +66,22 @@
     </div>
 
     <script>
-        // التأكد من استيراد supabase بشكل صحيح
-        const { createClient } = supabase;
-        
+        // Initialize Supabase client
+        const { createClient } = supabase; // This line should be after the script tag that loads supabase.js
+
         const supabaseUrl = 'https://gqkxntfezmzdtwfbynmz.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdxa3hudGZlem16ZHR3ZmJ5bm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjI0ODUsImV4cCI6MjA1MDA5ODQ4NX0.5O899MSH7B_UVoAlvOd9tjYqeoTPO4TVXgr7XZab3mw';
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // استخراج الرمز من الـ URL
+        // Extract the code from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const statusMessageElement = document.getElementById('statusMessage');
 
         if (code) {
-            // التحقق من الرمز مع Supabase
+            // Verify the code with Supabase
             supabase.auth.api
-                .verifyEmail(code)  // قم بتعديل هذه الطريقة إذا كانت Supabase تتطلب طريقة أخرى للتحقق
+                .verifyEmail(code)  // Adjust this method if Supabase requires a different method for verification
                 .then(response => {
                     if (response.error) {
                         console.log('Error verifying your email:', response.error);
