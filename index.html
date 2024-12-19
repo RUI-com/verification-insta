@@ -81,37 +81,36 @@
     </div>
 
     <script>
-        // Initialize Supabase
-        const supabaseUrl = 'https://gqkxntfezmzdtwfbynmz.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdxa3hudGZlem16ZHR3ZmJ5bm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjI0ODUsImV4cCI6MjA1MDA5ODQ4NX0.5O899MSH7B_UVoAlvOd9tjYqeoTPO4TVXgr7XZab3mw';
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+     // Get the code from the URL query parameters
+const urlParams = new URLSearchParams(window.location.search);
+const code = urlParams.get('code'); // استخدم 'code' بدلاً من 'token'
 
-        // Get the token from the URL query parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+const statusMessageElement = document.getElementById('statusMessage');
 
-        const statusMessageElement = document.getElementById('statusMessage');
-
-        if (token) {
-            // Verify the token with Supabase
-            supabase.auth.api.verifyEmail(token)
-                .then(response => {
-                    if (response.error) {
-                        statusMessageElement.classList.add('error-message');
-                        statusMessageElement.textContent = 'Error verifying your email.';
-                    } else {
-                        statusMessageElement.classList.add('message');
-                        statusMessageElement.textContent = 'Email verified successfully!';
-                    }
-                })
-                .catch(error => {
-                    statusMessageElement.classList.add('error-message');
-                    statusMessageElement.textContent = 'Error verifying your email.';
-                });
-        } else {
+if (code) {
+    // Verify the code with Supabase
+    supabase.auth.api.verifyEmail(code)
+        .then(response => {
+            if (response.error) {
+                console.log('Error verifying your email:', response.error);  // Logging error in the console
+                statusMessageElement.classList.add('error-message');
+                statusMessageElement.textContent = 'Error verifying your email.';
+            } else {
+                console.log('Email verified successfully');  // Logging success in the console
+                statusMessageElement.classList.add('message');
+                statusMessageElement.textContent = 'Email verified successfully!';
+            }
+        })
+        .catch(error => {
+            console.log('Error verifying email:', error);  // Logging error in the console
             statusMessageElement.classList.add('error-message');
-            statusMessageElement.textContent = 'No token found in the URL.';
-        }
+            statusMessageElement.textContent = 'Error verifying your email.';
+        });
+} else {
+    statusMessageElement.classList.add('error-message');
+    statusMessageElement.textContent = 'No code found in the URL.';
+}
+
     </script>
 </body>
 </html>
