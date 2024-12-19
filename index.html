@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Email</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.10/dist/umd/supabase.min.js"></script>
-
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -64,12 +62,12 @@
         <p>Verifying your email address...</p>
         <div class="message" id="statusMessage"></div>
     </div>
-
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        // Import and initialize Supabase client
+        // Initialize Supabase client
         const supabaseUrl = 'https://gqkxntfezmzdtwfbynmz.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdxa3hudGZlem16ZHR3ZmJ5bm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjI0ODUsImV4cCI6MjA1MDA5ODQ4NX0.5O899MSH7B_UVoAlvOd9tjYqeoTPO4TVXgr7XZab3mw';
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         // Extract the code from the URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -81,7 +79,7 @@
             supabase.auth.verifyOtp({ type: 'email', token: code })
                 .then(response => {
                     if (response.error) {
-                        console.log('Error verifying your email:', response.error);
+                        console.error('Error verifying your email:', response.error);
                         statusMessageElement.classList.add('error-message');
                         statusMessageElement.textContent = 'Error verifying your email.';
                     } else {
@@ -91,7 +89,7 @@
                     }
                 })
                 .catch(error => {
-                    console.log('Error verifying email:', error);
+                    console.error('Error verifying email:', error);
                     statusMessageElement.classList.add('error-message');
                     statusMessageElement.textContent = 'Error verifying your email.';
                 });
